@@ -1,0 +1,20 @@
+@startuml
+
+entity User {
+    - id: int
+    - name: String
+    - lastName: String
+    - dateOfBirth: Date
+    - sex: Sex
+    - hobby: List<String>
+    - city: String
+}
+
+enum Sex {
+    MALE
+    FEMALE
+}
+
+User o-- Sex
+
+@enduml

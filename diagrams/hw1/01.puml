@@ -1,0 +1,134 @@
+@startuml
+
+class RestController {
+    - request2DomainMapper: Request2DomainMapper
+    - domain2ResponseMapper : Domain2ResponseMapper
+    - userService: UserService
+    + register(UserRegistrationRequestRm): int
+    + get(int id): UserRm
+    + login()
+}
+
+class RequestValidator {
+    + validate(UserRm): boolean
+}
+
+class Request2DomainMapper {
+    - validator: RequestValidator
+    + map(UserRegistrationRequestRm) : UserRegistrationRequest
+}
+
+class Domain2DataMapper {
+    + map(UserRegistrationRequest) : UserRegistrationRequestDm
+}
+
+class Data2DomainMapper {
+    + map(UserDm): User
+}
+
+class Domain2ResponseMapper {
+    + map(User): UserRm
+}
+
+class UserService {
+    - domain2DataMapper: Domain2DataMapper
+    - data2DomainMapper: Data2DomainMapper
+    - userDao: UserDao
+    + register(UserRegistrationRequest): int id
+    + get(int id): User
+    + login()
+}
+
+class UserDao {
+    + register(UserRegistrationRequestDm)
+    + get(): UserDm
+}
+
+class UserRegistrationRequestRm {
+    - name: String
+    - lastName: String
+    - dateOfBirth: String
+    - sex: String
+    - hobby: List<String>
+    - city: String
+}
+
+class UserRegistrationRequest {
+    - name: String
+    - lastName: String
+    - dateOfBirth: Date
+    - sex: String
+    - hobby: List<String>
+    - city: String
+}
+
+class UserRegistrationRequestDm {
+    - name: String
+    - lastName: String
+    - dateOfBirth: Date
+    - sex: String
+    - hobby: List<String>
+    - city: String
+}
+
+class UserRm {
+    - id: int
+    - name: String
+    - lastName: String
+    - dateOfBirth: Date
+    - sex: String
+    - hobby: List<String>
+    - city: String
+}
+
+class UserDm {
+    - id: int
+    - name: String
+    - lastName: String
+    - dateOfBirth: Date
+    - sex: String
+    - hobby: List<String>
+    - city: String
+}
+
+class User {
+    - id: int
+    - name: String
+    - lastName: String
+    - dateOfBirth: Date
+    - sex: Sex
+    - hobby: List<String>
+    - city: String
+}
+
+enum Sex {
+    MALE,
+    FEMALE
+}
+
+User o-- Sex
+
+UserService o-- Data2DomainMapper
+UserService o-- Domain2DataMapper
+UserService o-- UserDao
+
+Request2DomainMapper o-- RequestValidator
+RestController o-- Request2DomainMapper
+RestController o-- UserService
+
+Domain2ResponseMapper --> User
+Domain2ResponseMapper --> UserRm
+
+Request2DomainMapper --> UserRegistrationRequestRm
+Request2DomainMapper --> UserRegistrationRequest
+
+Domain2DataMapper --> UserRegistrationRequest
+Domain2DataMapper --> UserRegistrationRequestDm
+Domain2DataMapper --> User
+Domain2DataMapper --> UserDm
+
+Data2DomainMapper -> UserDm
+Data2DomainMapper -> User
+
+
+@enduml

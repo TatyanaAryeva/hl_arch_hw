@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: HLARCH Core
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    hikari:
+      pool-name: HikariCPPool
+      driver-class-name: org.postgresql.Driver
+      username: postgres
+      connectionTimeout: 30000
+      maximum-pool-size: 10
+      data-source-properties:
+        statement_timeout: 30000
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog.yml
+
+logging:
+  level:
+    root: INFO
+    org.hlarch: DEBUG
+  file:
+    name: app.log
+    path: /app/logs
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+server:
+  port: 8080
