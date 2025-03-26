@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,4 +56,10 @@ public class UserRestController {
         return domain2ResponseMapper.map(user);
     }
 
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserRm> search(@RequestParam("namePrefix") String namePrefix, @RequestParam("lastNamePrefix") String lastNamePrefix) {
+        List<User> foundUsers = userService.search(namePrefix, lastNamePrefix);
+        return domain2ResponseMapper.map(foundUsers);
+    }
 }

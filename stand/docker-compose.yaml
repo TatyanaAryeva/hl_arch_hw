@@ -8,6 +8,8 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
+    volumes:
+      - "./people.v2.csv:/opt/people.v2.csv"
 
   core:
     image: "core:latest"

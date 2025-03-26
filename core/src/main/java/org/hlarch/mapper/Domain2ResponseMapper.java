@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
@@ -14,4 +16,6 @@ import org.springframework.stereotype.Service;
 public interface Domain2ResponseMapper {
 
     UserRm map(User user);
+
+    List<UserRm> map(List<User> users);
 }

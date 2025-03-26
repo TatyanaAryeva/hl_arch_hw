@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.hlarch.model.data.CredentialsDm;
 import org.hlarch.model.data.UserDm;
 import org.hlarch.model.data.UserRegistrationRequestDm;
+import org.hlarch.model.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -43,7 +44,7 @@ public class UserDao {
         } catch (Exception e) {
             log.error("Can not save info about user", e);
         }
-    return -1;
+        return -1;
     }
 
     public List<UserDm> get(int id) {
@@ -60,7 +61,7 @@ public class UserDao {
                         rs.getString("gender"),
                         rs.getString("hobbies"),
                         rs.getString("city")
-                        )
+                )
         );
     }
 
@@ -77,6 +78,26 @@ public class UserDao {
                         credentialsDm.getUsername(),
                         credentialsDm.getToken()}, LOGIN_QUERY_TYPES);
         return result != 0;
+    }
+
+    public List<UserDm> search(String namePrefix, String lastNamePrefix) {
+        return jdbcTemplate.query(SEARCH_QUERY,
+                new Object[]{
+                        StringEscapeUtils.escapeSql(namePrefix).concat("%"),
+                        StringEscapeUtils.escapeSql(lastNamePrefix).concat("%")
+                },
+                SEARCH_QUERY_TYPES,
+                (rs, i) -> new UserDm(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("last_name"),
+                        rs.getDate("date_of_birth"),
+                        rs.getString("gender"),
+                        rs.getString("hobbies"),
+                        rs.getString("city")
+                ));
     }
 
     public boolean isLogged(String username, UUID token) {
@@ -102,4 +123,11 @@ public class UserDao {
 
     private static final String IS_LOGGED_QUERY = "SELECT username FROM hlarch.session WHERE username =? AND token = ? AND expiration_time > NOW() - INTERVAL '15 MINUTES'";
     private static final int[] IS_LOGGED_QUERY_TYPES = new int[]{VARCHAR};
+
+    private static final String SEARCH_QUERY = "SELECT id, username, password, name, last_name, date_of_birth, gender, hobbies, city " +
+            "FROM hlarch.user WHERE name LIKE ? AND last_name LIKE ? " +
+            "ORDER BY id";
+    private static final int[] SEARCH_QUERY_TYPES = new int[]{VARCHAR, VARCHAR};
+
+
 }

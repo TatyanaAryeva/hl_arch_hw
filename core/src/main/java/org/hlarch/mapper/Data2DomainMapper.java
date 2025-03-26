@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import java.util.Base64;
+import java.util.List;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
@@ -21,5 +22,5 @@ public interface Data2DomainMapper {
     User map(UserDm userDm);
 
 
-
+    List<User> map(List<UserDm> usersDm);
 }

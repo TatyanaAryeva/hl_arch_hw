@@ -1,0 +1,1 @@
+CREATE index user_name_lname_idx ON hlarch.user (name text_pattern_ops, last_name text_pattern_ops);

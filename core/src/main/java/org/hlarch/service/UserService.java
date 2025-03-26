@@ -33,13 +33,11 @@ public class UserService {
             return -1;
         }
         UserRegistrationRequestDm registrationRequestDm = domain2DataMapper.map(request);
-        int res = userDao.register(registrationRequestDm);
-        return res;
+        return userDao.register(registrationRequestDm);
     }
 
     public User get(int id) {
         List<UserDm> userDm = userDao.get(id);
-        log.info("userDm: "+ userDm.get(0));
         return data2DomainMapper.map(userDm.get(0));
     }
 
@@ -63,5 +61,10 @@ public class UserService {
                 .token(token)
                 .message("You are logged in.")
                 .build();
+    }
+
+    public List<User> search(String namePrefix, String lastNamePrefix) {
+        List<UserDm> foundUsersDm = userDao.search(namePrefix, lastNamePrefix);
+        return data2DomainMapper.map(foundUsersDm);
     }
 }

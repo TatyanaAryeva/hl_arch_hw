@@ -3,3 +3,7 @@ databaseChangeLog:
       file: db/changelog/create_schema.sql
   - include:
       file: db/changelog/create_tables.sql
+  - include:
+      file: db/changelog/create_users.sql
+  - include:
+      file: db/changelog/create_index.sql
