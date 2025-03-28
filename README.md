@@ -55,4 +55,13 @@
 
 Поля `username` и `password` не возвращаются.
 
+#### Search user
+
+`GET /api/user/search`
+
+Параметры запроса:
+
+- `namePrefix`
+- `lastNamePrefix`
+
 
